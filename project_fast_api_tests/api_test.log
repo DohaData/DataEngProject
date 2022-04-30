@@ -1,0 +1,78 @@
+
+============================
+    Status test
+============================
+
+request done at "/status"
+
+expected result = 1
+actual result = 1
+
+==>  SUCCESS
+
+
+============================
+    Welcome message test
+============================
+
+request done at "/"
+| username=alice
+| password=wonderland
+
+expected result = 200
+actual restult = 200
+
+==>  SUCCESS
+
+
+============================
+    Test performance test
+============================
+
+request done at "/test_performance"
+| username=alice
+| password=wonderland
+
+expected precision = 0.99
+actual precision = 0.99
+
+expected recall = 0.55
+actual recall = 0.55
+
+expected f1 score = 0.71
+actual f1 score = 0.71
+
+
+==>  SUCCESS
+
+
+============================
+    Prediction test
+============================
+
+request done at "/predict"
+| username=alice
+| password=wonderland
+
+expected fraud probability = 0.35
+actual fraud probability = 0.35
+
+expected is fraud = 0
+actual is fraud = 0
+
+==>  SUCCESS
+
+
+============================
+    Welcome message test
+============================
+
+request done at "/"
+| username=ani
+| password=banani
+
+expected result = 401
+actual restult = 401
+
+==>  SUCCESS
+

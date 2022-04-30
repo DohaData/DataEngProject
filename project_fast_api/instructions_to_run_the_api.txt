@@ -1,0 +1,31 @@
+curl -X 'GET' \
+  'http://localhost:8000/status'
+  
+curl -X 'GET' \
+  'http://localhost:8000/' \
+  -H 'Authorization: Ym9iOmJ1aWxkZXIK'
+  
+curl -X 'GET' \
+  'http://localhost:8000/test_performance/v1' \
+  -H 'Authorization: Ym9iOmJ1aWxkZXIK'
+  
+curl -X 'GET' \
+  'http://localhost:8000/random_predict/v1' \
+  -H 'Authorization: Ym9iOmJ1aWxkZXIK'
+
+curl -X 'POST' \
+  'http://localhost:8000/predict/v1' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "user_id": 123,
+  "signup_time": "2022-04-30T11:35:43.727Z",
+  "purchase_time": "2022-04-30T11:35:43.727Z",
+  "purchase_value": 40,
+  "device_id": "XX",
+  "source": "XXX",
+  "browser": "XXXX",
+  "sex": "F",
+  "age": 30,
+  "ip_address": "XXXXX"
+}' -H 'Authorization: Ym9iOmJ1aWxkZXIK'
