@@ -1,0 +1,67 @@
+version: "3.9"
+services:
+  fraud_detection_api_service:
+    image: fraud_detection_docker:latest
+    container_name: fraud_detection_api
+    networks:
+      - tests_network
+    ports:
+      - "8000:8000"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://fraud_detection_api:8000/status"]
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+  status_tests:
+    image: status_tests_docker:latest
+    container_name: status_tests_container
+    networks:
+      - tests_network
+    volumes:
+      - ~/project_fast_api_tests:/home/logs
+    environment:
+      LOG: 1
+    depends_on:
+      - fraud_detection_api_service
+  welcome_message_tests:
+    image: welcome_message_tests_docker:latest
+    container_name: welcome_message_tests_container
+    networks:
+      - tests_network
+    volumes:
+      - ~/project_fast_api_tests:/home/logs
+    environment:
+      LOG: 1
+    depends_on:
+      - fraud_detection_api_service
+      - status_tests
+  test_performance_tests:
+    image: test_performance_tests_docker:latest
+    container_name: test_performance_tests_container
+    networks:
+      - tests_network
+    volumes:
+      - ~/project_fast_api_tests:/home/logs
+    environment:
+      LOG: 1
+    depends_on:
+      - fraud_detection_api_service
+      - status_tests
+      - welcome_message_tests
+  prediction_tests:
+    image: prediction_tests_docker:latest
+    container_name: prediction_tests_container
+    networks:
+      - tests_network
+    volumes:
+      - ~/project_fast_api_tests:/home/logs
+    environment:
+      LOG: 1
+    depends_on:
+      - fraud_detection_api_service
+      - status_tests
+      - welcome_message_tests
+      - test_performance_tests
+networks:
+  tests_network:

@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fraud-detection-app-deployment
+  labels:
+    app: fraud-detection-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: fraud-detection-app
+  template:
+    metadata:
+      labels:
+        app: fraud-detection-app
+    spec:
+      containers:
+      - name: fraud-detection-fastapi
+        image: datascientestprojectkuber/fraud_detection_fast_api:latest
+        ports:
+        - containerPort: 8000
