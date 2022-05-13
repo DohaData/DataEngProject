@@ -1,0 +1,55 @@
+version: "3.9"
+
+volumes:
+  volume_log:
+
+services:
+  api:
+    image: image_fraud_api
+    container_name: api
+    ports:
+      - "8000:8000"
+    networks:
+      - network_docker_compose
+  test_welcome_message:
+    image: image_test_welcome_message
+    environment:
+      LOG: 1
+    volumes:
+      - volume_log:/tests_api/log
+    networks:
+      - network_docker_compose
+  test_status:
+    image: image_test_status
+    environment:
+      LOG: 1
+    volumes:
+      - volume_log:/tests_api/log
+    networks:
+      - network_docker_compose
+  test_performance:
+    image: image_test_performance
+    environment:
+      LOG: 1
+    volumes:
+      - volume_log:/tests_api/log
+    networks:
+      - network_docker_compose
+  test_predict:
+    image: image_test_predict
+    environment:
+      LOG: 1
+    volumes:
+      - volume_log:/tests_api/log
+    networks:
+      - network_docker_compose
+  test_random_predict:
+    image: image_test_random_predict
+    environment:
+      LOG: 1
+    volumes:
+      - volume_log:/tests_api/log
+    networks:
+      - network_docker_compose
+networks:
+  network_docker_compose:
