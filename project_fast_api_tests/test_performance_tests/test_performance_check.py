@@ -1,7 +1,5 @@
 import os
 import requests
-import base64
-import time
 
 
 output = '''
@@ -10,8 +8,6 @@ output = '''
 ============================
 
 request done at "/test_performance"
-| username={username}
-| password={password}
 
 expected precision = {expected_precision}
 actual precision = {actual_precision}
@@ -40,16 +36,13 @@ def save_output(output):
             file.write(output)
 
 
-def test_performance(username, password,
-                     model_version="v1",
+def test_performance(model_version="v1",
                      precision=0.99,
                      recall=0.55,
                      f1_score=0.71):
-    auth_phrase = ":".join([username, password]).encode("utf-8")
-    time.sleep(1)
     r = requests.get(
         url='http://{address}:{port}/test_performance/{model_version}'.format(address=API_ADDRESS, port=API_PORT, model_version=model_version),
-        headers={"Authorization":base64.b64encode(auth_phrase).decode("utf-8")}
+        headers={"Authorization":"Basic alice:YWxpY2U6d29uZGVybGFuZAo="}
     )
 
     performance = r.json()
@@ -59,18 +52,14 @@ def test_performance(username, password,
     else:
         test_status = 'FAILURE'
 
-    save_output(output.format(username=username,
-                              password=password,
-                              expected_precision=precision,
+    save_output(output.format(expected_precision=precision,
                               actual_precision=performance["precision"],
                               expected_recall=recall,
                               actual_recall=performance["recall"],
                               expected_f1_score=f1_score,
                               actual_f1_score=performance["f1_score"],
                               test_status=test_status))
-    print(output.format(username=username,
-                        password=password,
-                        expected_precision=precision,
+    print(output.format(expected_precision=precision,
                         actual_precision=performance["precision"],
                         expected_recall=recall,
                         actual_recall=performance["recall"],
@@ -79,5 +68,5 @@ def test_performance(username, password,
                         test_status=test_status))
 
 ################ executing_tests ###################
-test_performance("alice", "wonderland", model_version="v1", precision=0.99, recall=0.55, f1_score=0.71)
+test_performance(model_version="v1", precision=0.99, recall=0.55, f1_score=0.71)
 

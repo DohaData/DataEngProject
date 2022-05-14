@@ -1,6 +1,5 @@
 import os
 import requests
-import time
 
 
 output = '''
@@ -31,7 +30,6 @@ def save_output(output):
 
 
 def test_status(expected_result="1"):
-    time.sleep(1)
     r = requests.get(
         url='http://{address}:{port}/status'.format(address=API_ADDRESS, port=API_PORT)
     )

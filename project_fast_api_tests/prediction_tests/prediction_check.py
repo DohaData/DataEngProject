@@ -1,7 +1,5 @@
 import os
 import requests
-import base64
-import time
 
 
 output = '''
@@ -10,8 +8,6 @@ output = '''
 ============================
 
 request done at "/predict"
-| username={username}
-| password={password}
 
 expected fraud probability = {expected_fraud_probability}
 actual fraud probability = {actual_fraud_probability}
@@ -36,27 +32,23 @@ def save_output(output):
             file.write(output)
 
 
-def test_prediction(username, password, model_version="v1",
+def test_prediction(model_version="v1",
                      fraud_probability=0.35,
                      is_fraud=0):
 
-    data = {"user_id": 123,
-            "signup_time": "2022-04-30T11:35:43.727Z",
+    data = {"signup_time": "2022-04-30T11:35:43.727Z",
             "purchase_time": "2022-04-30T11:35:43.727Z",
             "purchase_value": 40,
-            "device_id": "XX",
             "source": "XX",
             "browser": "XX",
             "sex": "F",
-            "age": 30,
-            "ip_address": "XX"}
-    auth_phrase = ":".join([username, password]).encode("utf-8")
-    time.sleep(1)
+            "age": 30}
+
     r = requests.post(
         url='http://{address}:{port}/predict/{model_version}'.format(address=API_ADDRESS, port=API_PORT, model_version=model_version),
         headers={"accept":"application/json",
                  "Content-Type":"application/json",
-                 "Authorization":base64.b64encode(auth_phrase).decode("utf-8")},
+                 "Authorization":"Basic alice:YWxpY2U6d29uZGVybGFuZAo="},
         json = data
     )
 
@@ -67,20 +59,16 @@ def test_prediction(username, password, model_version="v1",
     else:
         test_status = 'FAILURE'
 
-    save_output(output.format(username=username,
-                              password=password,
-                              expected_fraud_probability=fraud_probability,
+    save_output(output.format(expected_fraud_probability=fraud_probability,
                               actual_fraud_probability=prediction_results["fraud_probability"],
                               expected_is_fraud=is_fraud,
                               actual_is_fraud=prediction_results["is_fraud"],
                               test_status=test_status))
-    print(output.format(username=username,
-                        password=password,
-                        expected_fraud_probability=fraud_probability,
+    print(output.format(expected_fraud_probability=fraud_probability,
                         actual_fraud_probability=prediction_results["fraud_probability"],
                         expected_is_fraud=is_fraud,
                         actual_is_fraud=prediction_results["is_fraud"],
                         test_status=test_status))
 
 ################ executing_tests ###################
-test_prediction("alice", "wonderland", model_version="v1", fraud_probability=0.35, is_fraud=0)
+test_prediction(model_version="v1", fraud_probability=0.35, is_fraud=0)
