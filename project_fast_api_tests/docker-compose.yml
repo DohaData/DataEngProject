@@ -1,6 +1,7 @@
 version: "3.9"
 services:
   fraud_detection_api_service:
+    build: ../project_fast_api
     image: fraud_detection_docker:latest
     container_name: fraud_detection_api
     networks:
@@ -8,38 +9,41 @@ services:
     ports:
       - "8000:8000"
   status_tests:
+    build: ./status_tests
     command: bash -c 'let "i=0"; while [[ $$i -le 10 && "$$(curl --connect-timeout 10 -s -o /dev/null -w ''%{http_code}'' http://fraud_detection_api:8000/status)" != "200" ]]; do echo "Wait API is up" $$(( i++ )); sleep 1; done; echo "backend is up";'
     image: status_tests_docker:latest
     container_name: status_tests_container
     networks:
       - tests_network
     volumes:
-      - ~/project_fast_api_tests:/home/logs
+      - .:/home/logs
     environment:
       LOG: 1
     depends_on:
       - fraud_detection_api_service
   welcome_message_tests:
+    build: ./welcome_message_tests
     command: bash -c 'let "i=0"; while [[ $$i -le 10 && "$$(curl --connect-timeout 10 -s -o /dev/null -w ''%{http_code}'' http://fraud_detection_api:8000/status)" != "200" ]]; do echo "Wait API is up" $$(( i++ )); sleep 1; done; echo "backend is up";'
     image: welcome_message_tests_docker:latest
     container_name: welcome_message_tests_container
     networks:
       - tests_network
     volumes:
-      - ~/project_fast_api_tests:/home/logs
+      - .:/home/logs
     environment:
       LOG: 1
     depends_on:
       - fraud_detection_api_service
       - status_tests
   test_performance_tests:
+    build: ./test_performance_tests
     command: bash -c 'let "i=0"; while [[ $$i -le 10 && "$$(curl --connect-timeout 10 -s -o /dev/null -w ''%{http_code}'' http://fraud_detection_api:8000/status)" != "200" ]]; do echo "Wait API is up" $$(( i++ )); sleep 1; done; echo "backend is up";'
     image: test_performance_tests_docker:latest
     container_name: test_performance_tests_container
     networks:
       - tests_network
     volumes:
-      - ~/project_fast_api_tests:/home/logs
+      - .:/home/logs
     environment:
       LOG: 1
     depends_on:
@@ -47,13 +51,14 @@ services:
       - status_tests
       - welcome_message_tests
   prediction_tests:
+    build: ./prediction_tests
     command: bash -c 'let "i=0"; while [[ $$i -le 10 && "$$(curl --connect-timeout 10 -s -o /dev/null -w ''%{http_code}'' http://fraud_detection_api:8000/status)" != "200" ]]; do echo "Wait API is up" $$(( i++ )); sleep 1; done; echo "backend is up";'
     image: prediction_tests_docker:latest
     container_name: prediction_tests_container
     networks:
       - tests_network
     volumes:
-      - ~/project_fast_api_tests:/home/logs
+      - .:/home/logs
     environment:
       LOG: 1
     depends_on:
