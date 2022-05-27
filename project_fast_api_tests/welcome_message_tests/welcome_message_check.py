@@ -32,7 +32,7 @@ def save_output(output):
 def test_welcome_message(expected_result=200):
     r = requests.get(
         url='http://{address}:{port}/'.format(address=API_ADDRESS, port=API_PORT),
-        headers={"Authorization":"Basic alice:YWxpY2U6d29uZGVybGFuZAo="}
+        headers={"authentication":"Basic alice:YWxpY2U6d29uZGVybGFuZAo="}
     )
 
     actual_result = r.status_code

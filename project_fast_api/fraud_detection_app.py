@@ -132,21 +132,21 @@ async def check_app_status()->str:
 
 
 @api.get("/", name="Welcome message")
-async def welcome_message(authorization=Header(""))->str:
+async def welcome_message(authentication=Header(""))->str:
     """
     Welcome message to check that the app is properly running
     """
-    check_authorization(authorization)
+    check_authorization(authentication)
     return f"Hello! fraud detection app is running"
 
 
 @api.get("/test_performance/{model_version}", name="Models test performance")
 async def render_model_test_performance(model_version: str, 
-                                        authorization=Header(""))->ModelResultsByTransactionType:
+                                        authentication=Header(""))->ModelResultsByTransactionType:
     """
     Render model recorded test performance
     """
-    check_authorization(authorization)
+    check_authorization(authentication)
     check_avaible_models(model_version)
     model_results = MODEL_V1_RESULTS if model_version == "v1" else MODEL_V2_RESULTS
     return ModelResultsByTransactionType(**model_results)
@@ -154,11 +154,11 @@ async def render_model_test_performance(model_version: str,
 
 @api.get("/random_predict/{model_version}", name="Predict a fraud from random selection in dataset")
 async def compute_prediction_on_random_data(model_version: str, 
-                                            authorization=Header(""))->FraudModelOutputData:
+                                            authentication=Header(""))->FraudModelOutputData:
     """
     Predict on random original data
     """
-    check_authorization(authorization)
+    check_authorization(authentication)
     check_avaible_models(model_version)
     chosen_data, fraud_probability, is_fraud = predict_using_random_line(model_version)
     results = dict()
@@ -171,11 +171,11 @@ async def compute_prediction_on_random_data(model_version: str,
 @api.post("/predict/{model_version}", name="Predict a fraud from user datas")
 async def predict_on_user_entry(model_version: str,
                                 entry_data: FraudModelEntryData, 
-                                authorization=Header(""))->FraudModelOutputData:
+                                authentication=Header(""))->FraudModelOutputData:
     """
     Predict on user entry data
     """
-    check_authorization(authorization)
+    check_authorization(authentication)
     check_avaible_models(model_version)
     entry_data_df = pd.DataFrame.from_records([entry_data.dict()])
     try:

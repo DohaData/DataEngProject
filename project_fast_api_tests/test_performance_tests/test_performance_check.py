@@ -42,7 +42,7 @@ def test_performance(model_version="v1",
                      f1_score=0.71):
     r = requests.get(
         url='http://{address}:{port}/test_performance/{model_version}'.format(address=API_ADDRESS, port=API_PORT, model_version=model_version),
-        headers={"Authorization":"Basic alice:YWxpY2U6d29uZGVybGFuZAo="}
+        headers={"authentication":"Basic alice:YWxpY2U6d29uZGVybGFuZAo="}
     )
 
     performance = r.json()

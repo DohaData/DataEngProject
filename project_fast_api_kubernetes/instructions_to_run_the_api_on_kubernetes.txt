@@ -3,15 +3,15 @@ curl -X 'GET' \
   
 curl -X 'GET' \
   'http://192.168.49.2:80/' \
-  -H 'Authorization: Basic alice:YWxpY2U6d29uZGVybGFuZAo='
+  -H 'authentication: Basic alice:YWxpY2U6d29uZGVybGFuZAo='
   
 curl -X 'GET' \
   'http://192.168.49.2:80/test_performance/v1' \
-  -H 'Authorization: Basic alice:YWxpY2U6d29uZGVybGFuZAo='
+  -H 'authentication: Basic alice:YWxpY2U6d29uZGVybGFuZAo='
   
 curl -X 'GET' \
   'http://192.168.49.2:80/random_predict/v1' \
-  -H 'Authorization: Basic alice:YWxpY2U6d29uZGVybGFuZAo='
+  -H 'authentication: Basic alice:YWxpY2U6d29uZGVybGFuZAo='
 
 curl -X 'POST' \
   'http://192.168.49.2:80/predict/v1' \
@@ -25,4 +25,4 @@ curl -X 'POST' \
   "browser": "Chrome",
   "sex": "F",
   "age": 30
-}' -H 'Authorization: Basic alice:YWxpY2U6d29uZGVybGFuZAo='
+}' -H 'authentication: Basic alice:YWxpY2U6d29uZGVybGFuZAo='

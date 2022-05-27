@@ -48,7 +48,7 @@ def test_prediction(model_version="v1",
         url='http://{address}:{port}/predict/{model_version}'.format(address=API_ADDRESS, port=API_PORT, model_version=model_version),
         headers={"accept":"application/json",
                  "Content-Type":"application/json",
-                 "Authorization":"Basic alice:YWxpY2U6d29uZGVybGFuZAo="},
+                 "authentication":"Basic alice:YWxpY2U6d29uZGVybGFuZAo="},
         json = data
     )
 
